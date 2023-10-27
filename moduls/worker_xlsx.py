@@ -12,10 +12,10 @@ class XLSX_Data:
 - и порядковый номер строки, из которой были записаны данные.'''
     START_SLICE = 0
     END_SLICE = 4
-    NAME_PRODUCT = 12
-    NUM_ORDER = 20
-    CONTROL_KG = 19
-    NAME_COL = 'U'
+    NAME_PRODUCT = 13 # N - колонка
+    NUM_ORDER = 21 # V
+    CONTROL_KG = 20 # U 
+    NAME_COL = 'V'
     def __new__(cls, data, number, *args, **kwargs):
         res = list(map(lambda x: x.value, data))
         if cls.control_line(res):
