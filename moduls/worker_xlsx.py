@@ -74,7 +74,14 @@ class POKOM_Reader:
 
 
     def __call__(self):
-        return round(sum([i.num_order for i in self.all_rows]), 3)
+        print(*map(lambda x: x.num_order, self.all_rows))
+        try:
+            return round(sum([i.num_order for i in self.all_rows]), 3)
+        except TypeError as e:
+            print('Бланк содержит пустые значения в колонке заказов.')
+            print(e)
+            input('Нажать ENTER для завершения программы.')
+            raise TypeError
 
 
 class OneC:
