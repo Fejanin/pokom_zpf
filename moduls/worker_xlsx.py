@@ -74,14 +74,8 @@ class POKOM_Reader:
 
 
     def __call__(self):
-        print(*map(lambda x: x.num_order, self.all_rows))
-        try:
-            return round(sum([i.num_order for i in self.all_rows]), 3)
-        except TypeError as e:
-            print('Бланк содержит пустые значения в колонке заказов.')
-            print(e)
-            input('Нажать ENTER для завершения программы.')
-            raise TypeError
+        data = [i.num_order for i in self.all_rows if i.num_order]
+        return round(sum(data), 3)
 
 
 class OneC:
@@ -173,7 +167,7 @@ class POKOM_Rewriter:
     '''Основной класс. Создает списки с данными из читаемого и записываемого файла, проводит их сравнения и записывает совпавшие данные.
 Создает файл REPORT.txt с отчетом о проделанной работе.'''
     def __init__(self, read_name_file, write_name_file, flag_pocom = False):
-        self.tracker = Tracker()
+        self.tracker = Tracker(read_name_file)
         if not flag_pocom: # файл ПОКОМ
             self.read_file = POKOM_Reader(read_name_file)
         else:
@@ -210,7 +204,8 @@ class POKOM_Rewriter:
 
 class Tracker:
     '''Создает текстовый файл с результатами переноса данных (в т.ч. и ошибками)'''
-    def __init__(self):
+    def __init__(self, read_name_file):
+        self.name_file = read_name_file[:-5]
         self.error = []
         self.message = []
         self.wight1 = 0
@@ -219,7 +214,7 @@ class Tracker:
 
     def create_file(self):
         '''Создание файла с отчетом о проделанной работе.'''
-        with open('REPORT.txt', 'w') as f:
+        with open(f'REPORT {self.name_file}.txt', 'w') as f:
             if self.error:
                 f.write(f'Обнаружены следующие ошибки:\n')
                 for i in self.error:
