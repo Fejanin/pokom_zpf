@@ -187,7 +187,13 @@ class POKOM_Rewriter:
                         continue
                     self.write(j, i.num_order)
                     self.tracker.message.append(f'Перенос данных из {obj1} ==> \n\t{obj2}, в количестве {i.num_order}')
-                    self.tracker.wight2 += i.num_order
+                    try:
+                        self.tracker.wight2 += i.num_order
+                    except Exception as e:
+                        print(e)
+                        print(f'{i} # {i.num_order}')
+                        input('Exit')
+                        raise ValueError
                     continue
             if not flag and i.num_order: # ТРЕБУЕТСЯ ПРОВЕРИТЬ ПРАВИЛЬНОСТЬ ПРОВЕРКИ!!!
                 self.tracker.error.append(f'Объект - {obj1} в количестве {i.num_order} НЕ НАЙДЕН.')
